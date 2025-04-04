@@ -10,7 +10,6 @@ char **set_envp(void);
 
 int parse_and_expand(t_shell *mini)
 {
-	print(mini->tokens, "final token");
 	expand(mini, mini->tokens);
 	return (0);
 }
@@ -47,7 +46,7 @@ char **set_arg_array(int num_args, char *token)
 
 char *set_path_name(char *token)
 {
-	char *path = ft_strdup("bin\\bash\\");
+	char *path = ft_strdup("/bin/");
 	char *command = ft_strjoin(path, get_command(token));
 	return (command);
 }

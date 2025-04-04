@@ -18,7 +18,8 @@ int activate_shell(char *input, char **envp)
 		return (1);
 	if((status = parse_and_expand(mini)))
 		return (1);
-	print_cmd(mini->cmds);
+	if((status = execute(mini)))
+		return (1);
 	return (status);
 }
 

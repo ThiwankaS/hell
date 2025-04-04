@@ -20,6 +20,7 @@ SRCS = \
 	srcs/helper.c\
 	srcs/validate.c\
 	srcs/error.c\
+	srcs/execute.c\
 	main.c\
 
 OBJS = $(SRCS:.c=.o)

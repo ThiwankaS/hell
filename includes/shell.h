@@ -2,12 +2,14 @@
 # define SHELL_H
 
 # include <stdio.h>
-# include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
 # include <stdbool.h>
-# include <fcntl.h>
 # include <signal.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <sys/wait.h>
+# include <sys/types.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../ft_libft/libft.h"
@@ -76,5 +78,10 @@ int parse_and_expand(t_shell *mini);
  * Implementaion in srcs/utils.c
 */
 int ft_strnmcpy(char **dest, char *src, int n, int m);
+
+/**
+ * Implementaion in srcs/execute.c
+*/
+int execute(t_shell *mini);
 
 #endif
