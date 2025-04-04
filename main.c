@@ -17,15 +17,3 @@ int main (int ac, char **av)
 	}
 	return (status);
 }
-
-void print(t_list *list, char *msg)
-{
-	printf("\n%s\n", msg);
-	t_list *current = list;
-	while(current)
-	{
-		printf("%s\n", current->token);
-		current = current->next;
-	}
-	printf("------------------------------------\n");
-}
