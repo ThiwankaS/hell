@@ -1,43 +1,34 @@
 #include "../includes/shell.h"
 
-void expand(t_list *list);
+void expand(t_shell *mini, t_list *list);
 int get_num_args(char *token);
 void get_args(char **args, char *token, int size);
 char *get_command(char *token);
 char *set_path_name(char *token);
 char **set_arg_array(int num_args, char *token);
+char **set_envp(void);
 
 int parse_and_expand(t_shell *mini)
 {
-	t_cmd *cmd = malloc(sizeof(t_cmd));
-	if(!cmd)
-		return (1);
 	print(mini->tokens, "final token");
-	expand(mini->tokens);
+	expand(mini, mini->tokens);
 	return (0);
 }
 
-void expand(t_list *list)
+void expand(t_shell *mini, t_list *list)
 {
 	t_list *current = list;
-	char *token;
-	char **args;
-	int num_args, i;
+	t_cmd *cmd;
 
 	while(current)
 	{
-		token = current->token;
-		printf("%s\n", token);
-		num_args = get_num_args(token);
-		printf("arg_num : %d\n", num_args);
-		printf("%s\n", set_path_name(token));
-		args = set_arg_array(num_args, token);
-		i = 0;
-		while(i < (num_args + 1))
-		{
-			printf("args[%d] : %s\n", i, args[i]);
-			i++;
-		}
+		cmd = malloc(sizeof(t_cmd));
+		cmd->command = set_path_name(current->token);
+		cmd->num_args = get_num_args(current->token);
+		cmd->args = set_arg_array(cmd->num_args, current->token);
+		cmd->envp = set_envp();
+		cmd->next = NULL;
+		mini->cmds = list_add_command(mini->cmds, cmd);
 		current = current->next;
 	}
 }
@@ -126,4 +117,11 @@ int get_num_args(char *token)
 		i++;
 	}
 	return (count);
+}
+
+char **set_envp(void)
+{
+	char **envp = malloc(sizeof(char*));
+	envp[0] = NULL;
+	return (envp);
 }

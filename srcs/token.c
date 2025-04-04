@@ -34,3 +34,17 @@ t_list *list_add_back(t_list *list, char *str)
 	current->next = node;
 	return (list);
 }
+
+t_cmd *list_add_command(t_cmd *cmds, t_cmd *node)
+{
+	t_cmd *current;
+	if(!node)
+		return (cmds);
+	if(!cmds)
+		return (node);
+	current = cmds;
+	while(current && current->next)
+		current = current->next;
+	current->next = node;
+	return (cmds);
+}

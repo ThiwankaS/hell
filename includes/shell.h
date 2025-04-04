@@ -28,12 +28,14 @@ typedef struct s_cmd
 	char *command;
 	char **args;
 	char **envp;
+	int num_args;
 	struct s_cmd *next;
 } t_cmd;
 
 typedef struct s_shell
 {
 	char **envp;
+	t_cmd *cmds;
 	t_list *tokens;
 } t_shell;
 
@@ -62,6 +64,7 @@ int activate_shell(char *input, char **envp);
  * Implementation in srcs/token.c
 */
 t_list *list_add_back(t_list *list, char *str);
+t_cmd *list_add_command(t_cmd *cmds, t_cmd *node);
 int extract_tokens(t_list **tokens, char *input);
 
 /**
