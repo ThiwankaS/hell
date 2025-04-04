@@ -36,7 +36,6 @@ typedef struct s_cmd
 
 typedef struct s_shell
 {
-	char **envp;
 	t_cmd *cmds;
 	t_list *tokens;
 } t_shell;
@@ -60,7 +59,7 @@ int syntax_error(char *msg);
 /**
  * Implementation in srcs/helper.c
 */
-int activate_shell(char *input, char **envp);
+int activate_shell(char *input);
 
 /**
  * Implementation in srcs/token.c
@@ -83,5 +82,10 @@ int ft_strnmcpy(char **dest, char *src, int n, int m);
  * Implementaion in srcs/execute.c
 */
 int execute(t_shell *mini);
+
+/**
+ * Implementaion in srcs/cleaner.c
+*/
+int clear_and_exit(t_shell *mini);
 
 #endif

@@ -15,12 +15,13 @@ LIBFT_LINK = -L$(LIBFT_DIR) -lft
 LIBFT_INC = $(LIBFT_DIR)/libft.h $(LIBFT_DIR)/ft_printf.h $(LIBFT_DIR)/get_next_line.h
 
 SRCS = \
-	srcs/parser.c\
-	srcs/token.c\
-	srcs/helper.c\
-	srcs/validate.c\
+	srcs/cleaner.c\
 	srcs/error.c\
 	srcs/execute.c\
+	srcs/helper.c\
+	srcs/parser.c\
+	srcs/token.c\
+	srcs/validate.c\
 	main.c\
 
 OBJS = $(SRCS:.c=.o)
