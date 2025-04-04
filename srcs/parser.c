@@ -1,7 +1,11 @@
 #include "../includes/shell.h"
 
-void expand(t_cmd *cmd, t_list *list);
-int ft_strnmcpy(char **dest, char *src, int n, int m);
+void expand(t_list *list);
+int get_num_args(char *token);
+void get_args(char **args, char *token, int size);
+char *get_command(char *token);
+char *set_path_name(char *token);
+char **set_arg_array(int num_args, char *token);
 
 int parse_and_expand(t_shell *mini)
 {
@@ -9,36 +13,117 @@ int parse_and_expand(t_shell *mini)
 	if(!cmd)
 		return (1);
 	print(mini->tokens, "final token");
-	expand(cmd, mini->tokens);
+	expand(mini->tokens);
 	return (0);
 }
 
-void expand(t_cmd *cmd, t_list *list)
+void expand(t_list *list)
 {
-	int n1 = 0, n2 = ft_strchr(list->token, ' ') - list->token;
-	printf("n1 : %d\n", n1);
-	printf("n2 : %d\n", n2);
-	int res = ft_strnmcpy(&cmd->command, list->token, n1, n2);
-	printf("%s\n", cmd->command);
-	printf("res : %d\n", res);
+	t_list *current = list;
+	char *token;
+	char **args;
+	int num_args, i;
+
+	while(current)
+	{
+		token = current->token;
+		printf("%s\n", token);
+		num_args = get_num_args(token);
+		printf("arg_num : %d\n", num_args);
+		printf("%s\n", set_path_name(token));
+		args = set_arg_array(num_args, token);
+		i = 0;
+		while(i < (num_args + 1))
+		{
+			printf("args[%d] : %s\n", i, args[i]);
+			i++;
+		}
+		current = current->next;
+	}
 }
 
-int ft_strnmcpy(char **dest, char *src, int n, int m)
+char **set_arg_array(int num_args, char *token)
 {
-	int i = 0;
+	char **args = malloc(sizeof(char*) * (num_args + 1));
+	if(!args)
+		return (NULL);
+	args[0] = set_path_name(token);
+	if(num_args > 1)
+		get_args(args, token, num_args);
+	args[num_args] = NULL;
+	return (args);
+}
 
-	if (n >= m || !src || !dest)
-		return (-1);
+char *set_path_name(char *token)
+{
+	char *path = ft_strdup("bin\\bash\\");
+	char *command = ft_strjoin(path, get_command(token));
+	return (command);
+}
 
-	*dest = malloc(sizeof(char) * (m - n + 1));
-	if (!*dest)
-		return (-1);
-
-	while ((i + n) < m && src[i + n])
+char *get_command(char *token)
+{
+	int i = 0, j = 0;
+	char *command;
+	while(token && token[i])
 	{
-		(*dest)[i] = src[i + n];
+		if(token[i] == ' ')
+		{
+			command = malloc(sizeof(char)*(i + 1));
+			if(!command)
+				return (NULL);
+			while(token && token[j] && j < i)
+			{
+				command[j] = token[j];
+				j++;
+			}
+			command[j] = '\0';
+			return (command);
+		}
 		i++;
 	}
-	(*dest)[i] = '\0';
-	return (i);
+	if(token[i] == '\0')
+		return (token);
+	return (NULL);
+}
+
+void get_args(char **args, char *token, int size)
+{
+	int i = 0, k = 0, start = 0, step = 1;
+	while(token && token[i] && token[i] != ' ')
+		i++;
+	while(step < size)
+	{
+		while(token && token[i] && token[i] == ' ')
+			i++;
+		start = i;
+		while(token && token[i] && token[i] != ' ')
+			i++;
+		args[step] = malloc(sizeof(char) * (i - start + 1));
+		k = 0;
+		while(token && token[k + start] && (k + start) < i)
+		{
+			args[step][k] = token[k + start];
+			k++;
+		}
+		args[step][k] = '\0';
+		step++;
+	}
+}
+
+int get_num_args(char *token)
+{
+	int i = 0, count = 1, flag = 0;
+	while(token && token[i])
+	{
+		if(token[i] == ' ' && !flag)
+		{
+			count++;
+			flag = 1;
+		}
+		else if(token[i] != ' ' && flag)
+			flag = 0;
+		i++;
+	}
+	return (count);
 }

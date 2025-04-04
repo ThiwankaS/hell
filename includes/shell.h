@@ -27,6 +27,7 @@ typedef struct s_cmd
 {
 	char *command;
 	char **args;
+	char **envp;
 	struct s_cmd *next;
 } t_cmd;
 
@@ -36,17 +37,19 @@ typedef struct s_shell
 	t_list *tokens;
 } t_shell;
 
-
+/**
+ * Implementaion in main.c
+*/
 void print(t_list *list, char *msg);
 
 /**
- * Implementaion in srcs/validate/surround.c
+ * Implementaion in srcs/validate.c
 */
 int input_validate(char *input);
 char *in_quotes(char *input);
 
 /**
- * Implementaion in srcs/error/syntax_errors.c
+ * Implementaion in srcs/error.c
 */
 int syntax_error(char *msg);
 
@@ -56,14 +59,19 @@ int syntax_error(char *msg);
 int activate_shell(char *input, char **envp);
 
 /**
- * Implementation in srcs/tokenize/token_list.c
+ * Implementation in srcs/token.c
 */
 t_list *list_add_back(t_list *list, char *str);
 int extract_tokens(t_list **tokens, char *input);
 
 /**
- * Implementation in srcs/parse/parser.c
+ * Implementation in srcs/parser.c
 */
 int parse_and_expand(t_shell *mini);
+
+/**
+ * Implementaion in srcs/utils.c
+*/
+int ft_strnmcpy(char **dest, char *src, int n, int m);
 
 #endif

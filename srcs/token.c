@@ -19,7 +19,6 @@ int extract_tokens(t_list **tokens, char *input)
 	return (0);
 }
 
-
 t_list *list_add_back(t_list *list, char *str)
 {
 	t_list *node = malloc(sizeof(t_list)), *current;
