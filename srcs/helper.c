@@ -8,6 +8,7 @@ int activate_shell(char *input)
 	t_shell *mini = malloc(sizeof(t_shell));
 	if(!mini)
 		return (1);
+	mini->num_cmds = 0;
 	mini->tokens = NULL;
 	mini->cmds = NULL;
 	if((status = input_validate(input)))

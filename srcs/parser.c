@@ -28,6 +28,7 @@ void expand(t_shell *mini, t_list *list)
 		cmd->envp = set_envp();
 		cmd->next = NULL;
 		mini->cmds = list_add_command(mini->cmds, cmd);
+		mini->num_cmds++;
 		current = current->next;
 	}
 }

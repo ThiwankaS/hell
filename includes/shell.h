@@ -36,6 +36,7 @@ typedef struct s_cmd
 
 typedef struct s_shell
 {
+	int num_cmds;
 	t_cmd *cmds;
 	t_list *tokens;
 } t_shell;
