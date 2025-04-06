@@ -20,6 +20,7 @@ SRCS = \
 	srcs/execute.c\
 	srcs/helper.c\
 	srcs/parser.c\
+	srcs/signal.c\
 	srcs/token.c\
 	srcs/validate.c\
 	main.c\

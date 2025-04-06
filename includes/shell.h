@@ -89,4 +89,10 @@ int execute(t_shell *mini);
 */
 int clear_and_exit(t_shell *mini);
 
+
+/**
+ * Implementaion in srcs/signal.c
+*/
+void init_sig(void);
+
 #endif
