@@ -22,11 +22,11 @@ int input_validate(char **input)
 
 static void input_preprocess(char **input)
 {
-	char *str = *input;
+	char *str;
 
-	str = remove_comments(str);
-	str = ft_strtrim(str, " \f\n\r\t\v");
+	str = ft_strtrim(remove_comments(*input), " \f\n\r\t\v");
 	*input = ft_strdup(str);
+	free(str);
 }
 
 static char *remove_comments(char *input)
@@ -35,7 +35,11 @@ static char *remove_comments(char *input)
 
 	stream = ft_strchr(input,'#');
 	if(stream)
-		return (ft_strndup(input, (stream - input)));
+	{
+		stream = ft_strndup(input, (stream - input));
+		free(input);
+		return (stream);
+	}
 	return (input);
 }
 

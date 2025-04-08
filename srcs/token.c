@@ -9,13 +9,18 @@ int extract_tokens(t_list **tokens, char *input)
 	/**
 	 * first trying to extract a token bas on space/(' ')/ASCII INT 32 character
 	*/
-	char *line = ft_strtrim(input, " ");
-	char **words = ft_split(line, '|');
+	char **words = ft_split(ft_strtrim(input, " "), '|');
+	free(input);
+	if(!words)
+		return (1);
 	while(words && words[i])
 	{
 		*tokens = list_add_back(*tokens, ft_strtrim(words[i], " "));
+		free(words[i]);
 		i++;
 	}
+	if(words)
+		free(words);
 	return (0);
 }
 
@@ -25,7 +30,8 @@ t_list *list_add_back(t_list *list, char *str)
 	if(!node)
 		return (NULL);
 	node->next = NULL;
-	node->token = ft_strdup(str);
+	node->token = ft_strdup(str);	
+	free(str);
 	if(!list)
 		return (node);
 	current = list;

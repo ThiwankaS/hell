@@ -21,8 +21,9 @@ int clear_commands(t_cmd *cmds)
 		current = current->next;
 		free(cmd->command);
 		clear_array(cmd->args);
-		clear_array(cmd->envp);
+		free(cmd);
 	}
+	cmds = NULL;
 	return (0);
 }
 int clear_tokens(t_list *tokens)
@@ -34,6 +35,7 @@ int clear_tokens(t_list *tokens)
 		current = current->next;
 		free(token);
 	}
+	tokens = NULL;
 	return (0);
 }
 

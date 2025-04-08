@@ -29,7 +29,6 @@ typedef struct s_cmd
 {
 	char *command;
 	char **args;
-	char **envp;
 	int num_args;
 	struct s_cmd *next;
 } t_cmd;
@@ -37,6 +36,7 @@ typedef struct s_cmd
 typedef struct s_shell
 {
 	int num_cmds;
+	char **envp;
 	t_cmd *cmds;
 	t_list *tokens;
 } t_shell;
@@ -60,7 +60,7 @@ int syntax_error(char *msg);
 /**
  * Implementation in srcs/helper.c
 */
-int activate_shell(char *input);
+int activate_shell(char *input, char **envp);
 
 /**
  * Implementation in srcs/token.c

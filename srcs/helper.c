@@ -1,8 +1,8 @@
 #include "../includes/shell.h"
 
-int activate_shell(char *input);
+int activate_shell(char *input, char **envp);
 
-int activate_shell(char *input)
+int activate_shell(char *input, char **envp)
 {
 	int status = 0;
 	t_shell *mini = malloc(sizeof(t_shell));
@@ -11,6 +11,7 @@ int activate_shell(char *input)
 	mini->num_cmds = 0;
 	mini->tokens = NULL;
 	mini->cmds = NULL;
+	mini->envp = envp;
 
 	if((status = input_validate(&input)))
 		return (1);

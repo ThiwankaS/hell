@@ -25,7 +25,6 @@ void expand(t_shell *mini, t_list *list)
 		cmd->command = set_path_name(current->token);
 		cmd->num_args = get_num_args(current->token);
 		cmd->args = set_arg_array(cmd->num_args, current->token);
-		cmd->envp = set_envp();
 		cmd->next = NULL;
 		mini->cmds = list_add_command(mini->cmds, cmd);
 		mini->num_cmds++;
@@ -49,6 +48,7 @@ char *set_path_name(char *token)
 {
 	char *path = ft_strdup("/bin/");
 	char *command = ft_strjoin(path, get_command(token));
+	free(path);
 	return (command);
 }
 

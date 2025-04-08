@@ -57,7 +57,6 @@ void print_cmd(t_cmd *cmd)
 		printf("command : %s\n", current->command);
 		printf("args : \n");
 		print_args(current->args, current->num_args);
-		printf("envp : {%s}\n", current->envp[0]);
 		current = current->next;
 	}
 }
