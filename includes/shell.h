@@ -73,6 +73,7 @@ int extract_tokens(t_list **tokens, char *input);
  * Implementation in srcs/parser.c
 */
 int parse_and_expand(t_shell *mini);
+char *get_command(char *token);
 
 /**
  * Implementaion in srcs/utils.c
@@ -89,11 +90,17 @@ int execute(t_shell *mini);
  * Implementaion in srcs/cleaner.c
 */
 int clear_and_exit(t_shell *mini, int status);
+int clear_array(char **array);
 
 
 /**
  * Implementaion in srcs/signal.c
 */
 void init_sig(void);
+
+/**
+ * Implementaion in srcs/redirect.c
+*/
+t_cmd *handel_output(t_cmd *cmd, char *token);
 
 #endif

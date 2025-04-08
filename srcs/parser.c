@@ -6,7 +6,7 @@ void get_args(char **args, char *token, int size);
 char *get_command(char *token);
 char *set_path_name(char *token);
 char **set_arg_array(int num_args, char *token);
-char **set_envp(void);
+t_cmd *handel_pipe(t_cmd *cmd, t_list *current);
 
 int parse_and_expand(t_shell *mini)
 {
@@ -14,22 +14,35 @@ int parse_and_expand(t_shell *mini)
 	return (0);
 }
 
+
 void expand(t_shell *mini, t_list *list)
 {
 	t_list *current = list;
-	t_cmd *cmd;
+	t_cmd *cmd = NULL;
 
 	while(current)
 	{
 		cmd = malloc(sizeof(t_cmd));
-		cmd->command = set_path_name(current->token);
-		cmd->num_args = get_num_args(current->token);
-		cmd->args = set_arg_array(cmd->num_args, current->token);
-		cmd->next = NULL;
+		if(!cmd)
+			return;
+		if(ft_strchr(current->token, '>'))
+			cmd = handel_output(cmd, current->token);
+		else
+			cmd = handel_pipe(cmd, current);
 		mini->cmds = list_add_command(mini->cmds, cmd);
+		cmd = NULL;
 		mini->num_cmds++;
 		current = current->next;
 	}
+}
+
+t_cmd *handel_pipe(t_cmd *cmd, t_list *current)
+{
+	cmd->command = set_path_name(current->token);
+	cmd->num_args = get_num_args(current->token);
+	cmd->args = set_arg_array(cmd->num_args, current->token);
+	cmd->next = NULL;
+	return (cmd);
 }
 
 char **set_arg_array(int num_args, char *token)
@@ -118,11 +131,4 @@ int get_num_args(char *token)
 		i++;
 	}
 	return (count);
-}
-
-char **set_envp(void)
-{
-	char **envp = malloc(sizeof(char*));
-	envp[0] = NULL;
-	return (envp);
 }

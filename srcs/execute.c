@@ -1,8 +1,8 @@
 #include "../includes/shell.h"
 
-int close_fds(int fd[][2], int limit);
-int init_pipes(int fd[][2], int limit);
-int wait_for_children(int limit);
+static int close_fds(int fd[][2], int limit);
+static int init_pipes(int fd[][2], int limit);
+static int wait_for_children(int limit);
 
 int execute(t_shell *mini)
 {
@@ -15,7 +15,7 @@ int execute(t_shell *mini)
 	while(current)
 	{
 		if((pid = fork()) == -1)
-			syntax_error("Fork fialed");
+			perror("Fork fialed");
 		else if(pid == 0)
 		{
 			if(index > 0)
@@ -24,7 +24,7 @@ int execute(t_shell *mini)
 				dup2(fd[index][1], STDOUT_FILENO);
 			close_fds(fd, limit);
 			if((execve(current->command, current->args, mini->envp)) == -1)
-				syntax_error("Command execution failed");
+				perror("Command execution failed");
 		}
 		current = current->next;
 		index++;
@@ -34,7 +34,7 @@ int execute(t_shell *mini)
 	return (0);
 }
 
-int init_pipes(int fd[][2], int limit)
+static int init_pipes(int fd[][2], int limit)
 {
 	int i = 0;
 
@@ -42,14 +42,14 @@ int init_pipes(int fd[][2], int limit)
 	{
 		if((pipe(fd[i])) == -1)
 		{
-			syntax_error("Pipe creation failed");
+			perror("Pipe creation failed");
 		}
 		i++;
 	}
 	return (0);
 }
 
-int wait_for_children(int limit)
+static int wait_for_children(int limit)
 {
 	int i = 0;
 	while(i < limit)
@@ -60,7 +60,7 @@ int wait_for_children(int limit)
 	return (0);
 }
 
-int close_fds(int fd[][2], int limit)
+static int close_fds(int fd[][2], int limit)
 {
 	int i = 0;
 	while(i < limit)
