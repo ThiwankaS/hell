@@ -56,6 +56,7 @@ char *get_command(char *token)
 {
 	int i = 0, j = 0;
 	char *command;
+
 	while(token && token[i])
 	{
 		if(token[i] == ' ')

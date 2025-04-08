@@ -12,11 +12,11 @@ int input_validate(char **input)
 {
 	input_preprocess(input);
 	if(check_properly_enclosed(*input))
-		return (syntax_error("Sysntax Error : unclosed quotes !"));
+		return (syntax_error(*input ,"Sysntax Error : unclosed quotes !"));
 	if(check_if_quoted(*input))
-		return (syntax_error("Sysntax Error : command is quoted"));
+		return (syntax_error(*input ,"Sysntax Error : command is quoted"));
 	if(check_special_character(*input))
-		return (syntax_error("Sysntax Error : unrecognized characters !"));
+		return (syntax_error(*input ,"Sysntax Error : unrecognized characters !"));
 	return (0);
 }
 

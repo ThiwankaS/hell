@@ -21,5 +21,5 @@ Example ```shell > ls -la | wc -l ``` the input will break-down in to 02 tokens 
 
 2. Check the for the existance of meta character in ``` steram``` and decide the execution process base on the result. Here is the list characters considered as meat characters in this scope of project ```<, <<, >>, >, |, ' ' ```
 
-3.
+3. As a start firt the program will look for ```|``` in the stream and divided in to sub-process, every sub process will wait for the output of the previous process
 

@@ -19,6 +19,8 @@ int main (int ac, char **av, char **envp)
 			status = activate_shell(input, envp);
 			free(input);
 		}
+		if(input)
+			free(input);
 	}
 	return (status);
 }
