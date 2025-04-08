@@ -88,7 +88,7 @@ int execute(t_shell *mini);
 /**
  * Implementaion in srcs/cleaner.c
 */
-int clear_and_exit(t_shell *mini);
+int clear_and_exit(t_shell *mini, int status);
 
 
 /**

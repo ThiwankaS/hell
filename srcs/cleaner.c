@@ -4,12 +4,12 @@ int clear_commands(t_cmd *cmds);
 int clear_tokens(t_list *tokens);
 int clear_array(char **array);
 
-int clear_and_exit(t_shell *mini)
+int clear_and_exit(t_shell *mini, int status)
 {
 	clear_commands(mini->cmds);
 	clear_tokens(mini->tokens);
 	free(mini);
-	return (0);
+	return (status);
 }
 
 int clear_commands(t_cmd *cmds)
@@ -28,12 +28,13 @@ int clear_commands(t_cmd *cmds)
 }
 int clear_tokens(t_list *tokens)
 {
-	t_list *current = tokens, *token;
+	t_list *current = tokens, *next;
 	while(current)
 	{
-		token = current;
-		current = current->next;
-		free(token);
+		next = current->next;
+		free(current->token);
+		free(current);
+		current = next;
 	}
 	tokens = NULL;
 	return (0);

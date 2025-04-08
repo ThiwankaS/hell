@@ -1,4 +1,5 @@
 # Input validation
+
 Need to traverse through the ```input``` string for validation:
 
 1. The first and foremost thing in validation is removing any comments from the ```input``` if presence. So the idea is what ever input similar to ``` shell > ls -la # this is a comment ``` will processed the sameway ``` shell > ls -la ```. The ``` # this is a comment ``` part in the ```input ``` will be explicitly ignored.
@@ -11,5 +12,14 @@ Need to traverse through the ```input``` string for validation:
 
 5. Surrounding Quotes – Check whether stream is entirely enclosed by either single quotes (```''```) or double quotes (```""```). If so, treat it differently as a single command.
 
-### example invalid sysntax
-	```shell > "ls -la # this is a invalid syntax```
+# Extract token
+
+In this shell program anything delimiter by ```<, <<, >>, >, |, ' ' ``` will treat as ```token```
+Example ```shell > ls -la | wc -l ``` the input will break-down in to 02 tokens ``` ls -la ``` and ``` wc -l ```
+
+1. Any character other mentioned ones here and belongs Special Character to will generate a syntax error.
+
+2. Check the for the existance of meta character in ``` steram``` and decide the execution process base on the result. Here is the list characters considered as meat characters in this scope of project ```<, <<, >>, >, |, ' ' ```
+
+3.
+

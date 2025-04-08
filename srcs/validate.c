@@ -37,7 +37,6 @@ static char *remove_comments(char *input)
 	if(stream)
 	{
 		stream = ft_strndup(input, (stream - input));
-		free(input);
 		return (stream);
 	}
 	return (input);

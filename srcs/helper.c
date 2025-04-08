@@ -14,14 +14,12 @@ int activate_shell(char *input, char **envp)
 	mini->envp = envp;
 
 	if((status = input_validate(&input)))
-		return (1);
+		return (clear_and_exit(mini, status));
 	if((status = extract_tokens(&mini->tokens, input)))
-		return (1);
-	if((status = parse_and_expand(mini)))
-		return (1);
+		return (clear_and_exit(mini, status));
+	if((status = parse_and_expand(mini )))
+		return (clear_and_exit(mini, status));
 	if((status = execute(mini)))
-		return (1);
-	if((status = clear_and_exit(mini)))
-		return (1);
-	return (status);
+		return (clear_and_exit(mini, status));
+	return (clear_and_exit(mini, status));
 }
