@@ -1,5 +1,24 @@
 #include "../includes/shell.h"
 
+char *ft_strndup(char const *src, size_t n)
+{
+	size_t i = 0;
+	char *dest;
+
+	if(!src || n == 0)
+		return (NULL);
+	dest = malloc(sizeof(char) * (n + 1));
+	if(!dest)
+		return (NULL);
+	while(src && src[i] && i < n)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
 int ft_strnmcpy(char **dest, char *src, int n, int m)
 {
 	int i = 0;

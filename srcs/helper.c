@@ -11,7 +11,8 @@ int activate_shell(char *input)
 	mini->num_cmds = 0;
 	mini->tokens = NULL;
 	mini->cmds = NULL;
-	if((status = input_validate(input)))
+
+	if((status = input_validate(&input)))
 		return (1);
 	if((status = extract_tokens(&mini->tokens, input)))
 		return (1);

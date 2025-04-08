@@ -49,7 +49,7 @@ void print(t_list *list, char *msg);
 /**
  * Implementaion in srcs/validate.c
 */
-int input_validate(char *input);
+int input_validate(char **input);
 char *in_quotes(char *input);
 
 /**
@@ -78,6 +78,7 @@ int parse_and_expand(t_shell *mini);
  * Implementaion in srcs/utils.c
 */
 int ft_strnmcpy(char **dest, char *src, int n, int m);
+char *ft_strndup(char const *src, size_t n);
 
 /**
  * Implementaion in srcs/execute.c

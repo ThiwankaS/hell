@@ -1,18 +1,42 @@
 #include "../includes/shell.h"
 
-int input_validate(char *input);
+int input_validate(char **input);
 char *in_quotes(char *input);
+static void input_preprocess(char **input);
 static int check_properly_enclosed(char *input);
 static int check_special_character(char *input);
+static int check_if_quoted(char *input);
+static char *remove_comments(char *input);
 
-int input_validate(char *input)
+int input_validate(char **input)
 {
-	char *stream = ft_strdup(ft_strtrim(input, " \f\n\r\t\v"));
-	if(check_properly_enclosed(stream))
+	input_preprocess(input);
+	if(check_properly_enclosed(*input))
 		return (syntax_error("Sysntax Error : unclosed quotes !"));
-	if(check_special_character(stream	))
+	if(check_if_quoted(*input))
+		return (syntax_error("Sysntax Error : command is quoted"));
+	if(check_special_character(*input))
 		return (syntax_error("Sysntax Error : unrecognized characters !"));
 	return (0);
+}
+
+static void input_preprocess(char **input)
+{
+	char *str = *input;
+
+	str = remove_comments(str);
+	str = ft_strtrim(str, " \f\n\r\t\v");
+	*input = ft_strdup(str);
+}
+
+static char *remove_comments(char *input)
+{
+	char *stream;
+
+	stream = ft_strchr(input,'#');
+	if(stream)
+		return (ft_strndup(input, (stream - input)));
+	return (input);
 }
 
 static int check_properly_enclosed(char *input)
@@ -40,48 +64,38 @@ static int check_special_character(char *input)
 	{
 		if(ft_strchr(input, special_chars[i]))
 		{
-			if(str && ft_strchr(str, special_chars[i]))
-			{
-				free(str);
-				return (0);
-			}
-			free(str);
-			return (1);
+			if(!str)
+				return (1);
+			if(str && !ft_strchr(str, special_chars[i]))
+				return (1);
 		}
 		i++;
 	}
-	free(str);
 	return (0);
 }
 
 char *in_quotes(char *input)
 {
-	int i = 0, start = 0, end = 0, len = 0;
 	char *str = NULL;
+	int len = ft_strlen(input);
 
-	while(input && input[i])
-	{
-		if(input[i] == '\'' || input[i] == '"')
-			str = ft_strchr(input, input[i]);
-		i++;
-	}
-	if(!str)
-		return (NULL);
-	start = str - input;
-	i = ft_strlen(input) - 1;
-	while(input && input[i])
-	{
-		if(input[i] == '\'' || input[i] == '"')
-			str = ft_strrchr(input, input[i]);
-		i--;
-	}
-	if(!str)
-		return (NULL);
-	end = str - input;
-	len = end - start + 1;
-	str = malloc(sizeof(char) * len);
-	if(!str)
-		return (NULL);
-	ft_strlcpy(str, &input[start], (end - start + 2));
+	str = ft_strnstr(input, "'", len);
+	if(str)
+		return (str);
+	str = ft_strnstr(input, "\"", len);
+	if(str)
+		return (str);
 	return (str);
+}
+
+static int check_if_quoted(char *input)
+{
+	int len = ft_strlen(input);
+
+	if(input[0] == '\'' && input[len-1] == '\'')
+		return (1);
+	else if(input[0] == '"' && input[len-1] == '"')
+		return (1);
+	else
+		return (0);
 }
