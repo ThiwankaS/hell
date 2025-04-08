@@ -7,9 +7,10 @@ static int check_special_character(char *input);
 
 int input_validate(char *input)
 {
-	if(check_properly_enclosed(input))
+	char *stream = ft_strdup(ft_strtrim(input, " \f\n\r\t\v"));
+	if(check_properly_enclosed(stream))
 		return (syntax_error("Sysntax Error : unclosed quotes !"));
-	if(check_special_character(input))
+	if(check_special_character(stream	))
 		return (syntax_error("Sysntax Error : unrecognized characters !"));
 	return (0);
 }
