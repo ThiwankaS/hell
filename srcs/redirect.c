@@ -10,18 +10,24 @@
 	return (0);
 */
 
-t_cmd *handel_output(t_cmd *cmd, char *token)
+t_cmd *handel_output(char *token)
 {
 	/**
 	 * example of the command format
 	 * echo "the string need to write in to the file" > file.txt
 	*/
+	t_cmd *cmd = malloc(sizeof(t_cmd));
+	if(!cmd)
+		return (NULL);
 	char **args = malloc(sizeof(char *) * 3);
-	args[0] = ft_strdup("bin\echo");
-	args[1] = ft_strdup("this is the testing string");
+	args[0] = ft_strdup("/bin/echo");
+	args[1] = ft_strdup("Here is the new string");
 	args[2] = NULL;
 	printf("token : %s\n", token);
-	cmd->command = ft_strdup("bin\echo");
+	cmd->type = OPRD_CMD;
+	cmd->command = ft_strdup("/bin/echo");
 	cmd->args = args;
+	cmd->num_args = 3;
+	cmd->next = NULL;
 	return (cmd);
 }

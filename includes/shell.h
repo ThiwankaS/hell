@@ -16,6 +16,10 @@
 # include "../ft_libft/ft_printf.h"
 # include "../ft_libft/get_next_line.h"
 
+# define SMPL_CMD 1
+# define OPRD_CMD 2
+
+
 /**
  * data node strucutre to hold the tokens extract from input, this node will make a linked list
 */
@@ -27,6 +31,7 @@ typedef struct s_list
 
 typedef struct s_cmd
 {
+	int type;
 	char *command;
 	char **args;
 	int num_args;
@@ -101,6 +106,6 @@ void init_sig(void);
 /**
  * Implementaion in srcs/redirect.c
 */
-t_cmd *handel_output(t_cmd *cmd, char *token);
+t_cmd *handel_output(char *token);
 
 #endif

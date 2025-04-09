@@ -6,7 +6,7 @@ void get_args(char **args, char *token, int size);
 char *get_command(char *token);
 char *set_path_name(char *token);
 char **set_arg_array(int num_args, char *token);
-t_cmd *handel_pipe(t_cmd *cmd, t_list *current);
+t_cmd *handel_pipe(t_list *current);
 
 int parse_and_expand(t_shell *mini)
 {
@@ -22,13 +22,10 @@ void expand(t_shell *mini, t_list *list)
 
 	while(current)
 	{
-		cmd = malloc(sizeof(t_cmd));
-		if(!cmd)
-			return;
 		if(ft_strchr(current->token, '>'))
-			cmd = handel_output(cmd, current->token);
+			cmd = handel_output(current->token);
 		else
-			cmd = handel_pipe(cmd, current);
+			cmd = handel_pipe(current);
 		mini->cmds = list_add_command(mini->cmds, cmd);
 		cmd = NULL;
 		mini->num_cmds++;
@@ -36,8 +33,12 @@ void expand(t_shell *mini, t_list *list)
 	}
 }
 
-t_cmd *handel_pipe(t_cmd *cmd, t_list *current)
+t_cmd *handel_pipe(t_list *current)
 {
+	t_cmd *cmd = malloc(sizeof(t_cmd));
+	if(!cmd)
+			return (NULL);
+	cmd->type = SMPL_CMD;
 	cmd->command = set_path_name(current->token);
 	cmd->num_args = get_num_args(current->token);
 	cmd->args = set_arg_array(cmd->num_args, current->token);

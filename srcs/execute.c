@@ -18,6 +18,20 @@ int execute(t_shell *mini)
 			perror("Fork fialed");
 		else if(pid == 0)
 		{
+			if(current->type == OPRD_CMD)
+			{
+				int fd = open("file.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				if (fd == -1) {
+					perror("File opening failed!");
+					return (1);
+				}
+				if(dup2(fd, STDOUT_FILENO) == -1)
+				{
+					perror("FD duplication failed!");
+					return (1);
+				}
+				close(fd);
+			}
 			if(index > 0)
 				dup2(fd[index - 1][0], STDIN_FILENO);
 			if(current->next)
