@@ -1,14 +1,8 @@
 #include "../includes/shell.h"
 
-/**
- * char *str = "this line will write to the file";
-	int fd = open("test.txt", O_RDWR | O_CREAT, 0644);
-	int len = ft_strlen(str);
-	printf("len : %d\n", len);
-	write(fd, str, len);
-	close(fd);
-	return (0);
-*/
+int ft_isspace(int c);
+int get_num_args(char *str);
+static char *get_command2(char *token);
 
 t_cmd *handel_output(char *token)
 {
@@ -19,15 +13,40 @@ t_cmd *handel_output(char *token)
 	t_cmd *cmd = malloc(sizeof(t_cmd));
 	if(!cmd)
 		return (NULL);
-	char **args = malloc(sizeof(char *) * 3);
-	args[0] = ft_strdup("/bin/echo");
-	args[1] = ft_strdup("Here is the new string");
-	args[2] = NULL;
-	printf("token : %s\n", token);
 	cmd->type = OPRD_CMD;
-	cmd->command = ft_strdup("/bin/echo");
+	cmd->command = get_command2(token);
+	char **args = malloc(sizeof(char *) * 2);
+	args[0] = get_command2(token);
+	args[1] = NULL;
 	cmd->args = args;
-	cmd->num_args = 3;
+	cmd->num_args = 2;
 	cmd->next = NULL;
 	return (cmd);
 }
+
+static char *get_command2(char *token)
+{
+	int i = 1, start = 0;
+	char *str = ft_strchr(token, '>'), c, *res;
+	while(str && str[i] && ft_isspace(str[i]))
+		i++;
+	start = i;
+	if(str[i] == '\'' || str[i] == '"')
+	{
+		c = str[i];
+		i++;
+		while(str && str[i] && str[i] != c)
+			i++;
+		i++;
+	}
+	else
+	{
+		while(str && str[i] && !ft_isspace(str[i]))
+			i++;
+	}
+	res = ft_strnmdup(str, start, i);
+	return (res);
+}
+
+
+

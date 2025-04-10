@@ -33,6 +33,7 @@ typedef struct s_cmd
 {
 	int type;
 	char *command;
+	char *filename;
 	char **args;
 	int num_args;
 	struct s_cmd *next;
@@ -78,13 +79,15 @@ int extract_tokens(t_list **tokens, char *input);
  * Implementation in srcs/parser.c
 */
 int parse_and_expand(t_shell *mini);
-char *get_command(char *token);
+//static char *get_command(char *token);
 
 /**
  * Implementaion in srcs/utils.c
 */
+int ft_isspace(int c);
+int get_num_args(char *str);
 int ft_strnmcpy(char **dest, char *src, int n, int m);
-char *ft_strndup(char const *src, size_t n);
+char *ft_strnmdup(char const *src, int n , int m);
 
 /**
  * Implementaion in srcs/execute.c

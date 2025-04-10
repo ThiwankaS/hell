@@ -1,11 +1,11 @@
 #include "../includes/shell.h"
 
 void expand(t_shell *mini, t_list *list);
-int get_num_args(char *token);
-void get_args(char **args, char *token, int size);
-char *get_command(char *token);
-char *set_path_name(char *token);
-char **set_arg_array(int num_args, char *token);
+static int get_num_args2(char *token);
+static void get_args(char **args, char *token, int size);
+static char *get_command(char *token);
+static char *set_path_name(char *token);
+static char **set_arg_array(int num_args, char *token);
 t_cmd *handel_pipe(t_list *current);
 
 int parse_and_expand(t_shell *mini)
@@ -40,13 +40,14 @@ t_cmd *handel_pipe(t_list *current)
 			return (NULL);
 	cmd->type = SMPL_CMD;
 	cmd->command = set_path_name(current->token);
-	cmd->num_args = get_num_args(current->token);
+	cmd->filename = NULL;
+	cmd->num_args = get_num_args2(current->token);
 	cmd->args = set_arg_array(cmd->num_args, current->token);
 	cmd->next = NULL;
 	return (cmd);
 }
 
-char **set_arg_array(int num_args, char *token)
+static char **set_arg_array(int num_args, char *token)
 {
 	char **args = malloc(sizeof(char*) * (num_args + 1));
 	if(!args)
@@ -58,7 +59,7 @@ char **set_arg_array(int num_args, char *token)
 	return (args);
 }
 
-char *set_path_name(char *token)
+static char *set_path_name(char *token)
 {
 	char *path = ft_strdup("/bin/");
 	char *command = ft_strjoin(path, get_command(token));
@@ -66,7 +67,7 @@ char *set_path_name(char *token)
 	return (command);
 }
 
-char *get_command(char *token)
+static char *get_command(char *token)
 {
 	int i = 0, j = 0;
 	char *command;
@@ -93,7 +94,7 @@ char *get_command(char *token)
 	return (NULL);
 }
 
-void get_args(char **args, char *token, int size)
+static void get_args(char **args, char *token, int size)
 {
 	int i = 0, k = 0, start = 0, step = 1;
 	while(token && token[i] && token[i] != ' ')
@@ -117,7 +118,7 @@ void get_args(char **args, char *token, int size)
 	}
 }
 
-int get_num_args(char *token)
+static int get_num_args2(char *token)
 {
 	int i = 0, count = 1, flag = 0;
 	while(token && token[i])

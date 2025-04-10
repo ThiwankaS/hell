@@ -1,18 +1,18 @@
 #include "../includes/shell.h"
 
-char *ft_strndup(char const *src, size_t n)
+char *ft_strnmdup(char const *src, int n , int m)
 {
-	size_t i = 0;
+	int i = 0;
 	char *dest;
 
 	if(!src || n == 0)
 		return (NULL);
-	dest = malloc(sizeof(char) * (n + 1));
+	dest = malloc(sizeof(char) * ((m - n) + 1));
 	if(!dest)
 		return (NULL);
-	while(src && src[i] && i < n)
+	while(src && src[i + n] && (i + n) < m)
 	{
-		dest[i] = src[i];
+		dest[i] = src[i + n];
 		i++;
 	}
 	dest[i] = '\0';
@@ -37,6 +37,39 @@ int ft_strnmcpy(char **dest, char *src, int n, int m)
 	}
 	(*dest)[i] = '\0';
 	return (i);
+}
+
+int ft_isspace(int c)
+{
+	if(c == ' ' || c == '\f' || c == '\t' || c == '\v' || c == '\r' || c == '\n')
+		return (1);
+	return (0);
+}
+
+int get_num_args(char *str)
+{
+	int i = 0, count = 1, flag = 0, space = 0;
+	if(!str)
+		return (0);
+	while(str[i])
+	{
+		if(str[i] == '"' || str[i] == '\'')
+		{
+			if(!flag)
+				flag = 1;
+			else
+				flag = 0;
+		}
+		if(ft_isspace(str[i]) && !flag && !space)
+		{
+			count++;
+			space = 1;
+		}
+		if(!ft_isspace(str[i]))
+			space = 0;
+		i++;
+	}
+	return (count);
 }
 
 void print_args(char **args, int size)
