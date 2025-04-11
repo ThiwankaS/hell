@@ -1,11 +1,11 @@
 #include "../includes/shell.h"
 
 void expand(t_shell *mini, t_list *list);
-static int get_num_args2(char *token);
+int get_num_args(char *token);
 static void get_args(char **args, char *token, int size);
-static char *get_command(char *token);
+static char *get_command_smpl(char *token);
 static char *set_path_name(char *token);
-static char **set_arg_array(int num_args, char *token);
+static char **set_arg_array_smpl(int num_args, char *token);
 t_cmd *handel_pipe(t_list *current);
 
 int parse_and_expand(t_shell *mini)
@@ -41,13 +41,13 @@ t_cmd *handel_pipe(t_list *current)
 	cmd->type = SMPL_CMD;
 	cmd->command = set_path_name(current->token);
 	cmd->filename = NULL;
-	cmd->num_args = get_num_args2(current->token);
-	cmd->args = set_arg_array(cmd->num_args, current->token);
+	cmd->num_args = get_num_args(current->token);
+	cmd->args = set_arg_array_smpl(cmd->num_args, current->token);
 	cmd->next = NULL;
 	return (cmd);
 }
 
-static char **set_arg_array(int num_args, char *token)
+static char **set_arg_array_smpl(int num_args, char *token)
 {
 	char **args = malloc(sizeof(char*) * (num_args + 1));
 	if(!args)
@@ -62,12 +62,12 @@ static char **set_arg_array(int num_args, char *token)
 static char *set_path_name(char *token)
 {
 	char *path = ft_strdup("/bin/");
-	char *command = ft_strjoin(path, get_command(token));
+	char *command = ft_strjoin(path, get_command_smpl(token));
 	free(path);
 	return (command);
 }
 
-static char *get_command(char *token)
+static char *get_command_smpl(char *token)
 {
 	int i = 0, j = 0;
 	char *command;
@@ -116,21 +116,4 @@ static void get_args(char **args, char *token, int size)
 		args[step][k] = '\0';
 		step++;
 	}
-}
-
-static int get_num_args2(char *token)
-{
-	int i = 0, count = 1, flag = 0;
-	while(token && token[i])
-	{
-		if(token[i] == ' ' && !flag)
-		{
-			count++;
-			flag = 1;
-		}
-		else if(token[i] != ' ' && flag)
-			flag = 0;
-		i++;
-	}
-	return (count);
 }

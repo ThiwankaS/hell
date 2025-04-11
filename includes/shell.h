@@ -79,7 +79,6 @@ int extract_tokens(t_list **tokens, char *input);
  * Implementation in srcs/parser.c
 */
 int parse_and_expand(t_shell *mini);
-//static char *get_command(char *token);
 
 /**
  * Implementaion in srcs/utils.c

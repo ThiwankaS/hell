@@ -21,7 +21,7 @@ int execute(t_shell *mini)
 			if(current->type == OPRD_CMD)
 			{
 				int fd;
-				if ((fd = open(current->command, O_WRONLY | O_CREAT | O_TRUNC, 0666)) == -1) {
+				if ((fd = open(current->filename, O_WRONLY | O_CREAT | O_TRUNC, 0666)) == -1) {
 					perror("File opening failed!");
 					exit (1);
 				}

@@ -5,7 +5,7 @@ char *ft_strnmdup(char const *src, int n , int m)
 	int i = 0;
 	char *dest;
 
-	if(!src || n == 0)
+	if(!src || m == 0)
 		return (NULL);
 	dest = malloc(sizeof(char) * ((m - n) + 1));
 	if(!dest)
