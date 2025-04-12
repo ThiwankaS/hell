@@ -5,14 +5,17 @@ t_list *list_add_back(t_list *list, char *str);
 int extract_tokens(t_list **tokens, char *input)
 {
 	int i = 0;
-	char **words, *trimmed;
+	char **words;
 
 	/**
 	 * first trying to extract a token bas on space/(' ')/ASCII INT 32 character
 	*/
-	trimmed = ft_strtrim(input, " ");
-	words = ft_split(trimmed, '|');
-	free(trimmed);
+	if(check_if_quoted(input))
+	{
+		*tokens = list_add_back(*tokens, input);
+		return (0);
+	}
+	words = ft_split(input, '|');
 	free(input);
 	if(!words)
 		return (1);

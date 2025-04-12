@@ -19,7 +19,10 @@ int clear_commands(t_cmd *cmds)
 	{
 		cmd = current;
 		current = current->next;
-		free(cmd->command);
+		if(cmd->command)
+			free(cmd->command);
+		if(cmd->filename)
+			free(cmd->filename);
 		clear_array(cmd->args);
 		free(cmd);
 	}

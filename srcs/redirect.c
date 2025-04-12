@@ -2,8 +2,6 @@
 
 int ft_isspace(int c);
 static char *set_filename(char *token);
-static char *get_command_oprd(char *token);
-static char *set_path_name(char *token);
 static char **set_arg_array_oprd(int num_args, char *token);
 
 t_cmd *handel_output(char *token)
@@ -55,38 +53,6 @@ static char *set_filename(char *token)
 	}
 	res = ft_strnmdup(str, start, i);
 	return (res);
-}
-
-static char *get_command_oprd(char *token)
-{
-	int i = 0, start = 0;
-	char c, *res;
-	while(token && token[i] && ft_isspace(token[i]))
-		i++;
-	if(token[i] == '\'' || token[i] == '"')
-	{
-		c = token[i];
-		i++;
-		start = i;
-		while(token && token[i] && token[i] != c)
-			i++;
-	}
-	else
-	{
-		start = i;
-		while(token && token[i] && !ft_isspace(token[i]))
-			i++;
-	}
-	res = ft_strnmdup(token, start, i);
-	return (res);
-}
-
-static char *set_path_name(char *token)
-{
-	char *path = ft_strdup("/bin/");
-	char *command = ft_strjoin(path, get_command_oprd(token));
-	free(path);
-	return (command);
 }
 
 

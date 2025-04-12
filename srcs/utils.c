@@ -51,7 +51,7 @@ int get_num_args(char *str)
 	int i = 0, count = 1, flag = 0, space = 0;
 	if(!str)
 		return (0);
-	while(str[i])
+	while(str && str[i])
 	{
 		if(str[i] == '"' || str[i] == '\'')
 		{

@@ -56,7 +56,6 @@ void print(t_list *list, char *msg);
  * Implementaion in srcs/validate.c
 */
 int input_validate(char **input);
-char *in_quotes(char *input);
 
 /**
  * Implementaion in srcs/error.c
@@ -79,6 +78,8 @@ int extract_tokens(t_list **tokens, char *input);
  * Implementation in srcs/parser.c
 */
 int parse_and_expand(t_shell *mini);
+char *get_command(char *token);
+char *set_path_name(char *token);
 
 /**
  * Implementaion in srcs/utils.c
@@ -104,6 +105,14 @@ int clear_array(char **array);
  * Implementaion in srcs/signal.c
 */
 void init_sig(void);
+
+/**
+ * Implementaion in srcs/quote.c
+*/
+char *in_quotes(char *input);
+char *remove_quotes(char *str);
+t_cmd *handle_quoted(char *input);
+int check_if_quoted(char *input);
 
 /**
  * Implementaion in srcs/redirect.c

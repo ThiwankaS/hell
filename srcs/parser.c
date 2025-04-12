@@ -2,9 +2,8 @@
 
 void expand(t_shell *mini, t_list *list);
 int get_num_args(char *token);
+char *set_path_name(char *token);
 static void get_args(char **args, char *token, int size);
-static char *get_command_smpl(char *token);
-static char *set_path_name(char *token);
 static char **set_arg_array_smpl(int num_args, char *token);
 t_cmd *handel_pipe(t_list *current);
 
@@ -14,7 +13,6 @@ int parse_and_expand(t_shell *mini)
 	return (0);
 }
 
-
 void expand(t_shell *mini, t_list *list)
 {
 	t_list *current = list;
@@ -22,7 +20,9 @@ void expand(t_shell *mini, t_list *list)
 
 	while(current)
 	{
-		if(ft_strchr(current->token, '>'))
+		if(check_if_quoted(current->token))
+			cmd = handle_quoted(current->token);
+		else if(ft_strchr(current->token, '>'))
 			cmd = handel_output(current->token);
 		else
 			cmd = handel_pipe(current);
@@ -59,39 +59,38 @@ static char **set_arg_array_smpl(int num_args, char *token)
 	return (args);
 }
 
-static char *set_path_name(char *token)
+char *set_path_name(char *token)
 {
 	char *path = ft_strdup("/bin/");
-	char *command = ft_strjoin(path, get_command_smpl(token));
+	char *cmd =  get_command(token);
+	char *command = ft_strjoin(path, cmd);
 	free(path);
+	free(cmd);
 	return (command);
 }
 
-static char *get_command_smpl(char *token)
+char *get_command(char *token)
 {
-	int i = 0, j = 0;
-	char *command;
-
-	while(token && token[i])
-	{
-		if(token[i] == ' ')
-		{
-			command = malloc(sizeof(char)*(i + 1));
-			if(!command)
-				return (NULL);
-			while(token && token[j] && j < i)
-			{
-				command[j] = token[j];
-				j++;
-			}
-			command[j] = '\0';
-			return (command);
-		}
+	int i = 0, start = 0;
+	char c, *res;
+	while(token && token[i] && ft_isspace(token[i]))
 		i++;
+	if(token[i] == '\'' || token[i] == '"')
+	{
+		c = token[i];
+		i++;
+		start = i;
+		while(token && token[i] && token[i] != c)
+			i++;
 	}
-	if(token[i] == '\0')
-		return (token);
-	return (NULL);
+	else
+	{
+		start = i;
+		while(token && token[i] && !ft_isspace(token[i]))
+			i++;
+	}
+	res = ft_strnmdup(token, start, i);
+	return (res);
 }
 
 static void get_args(char **args, char *token, int size)
