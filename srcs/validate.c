@@ -4,6 +4,7 @@ int input_validate(char **input);
 static void input_preprocess(char **input);
 static int check_properly_enclosed(char *input);
 static int check_special_character(char *input);
+static int check_output_character(char *input);
 static char *remove_comments(char *input);
 
 int input_validate(char **input)
@@ -13,6 +14,8 @@ int input_validate(char **input)
 		return (syntax_error(*input ,"Sysntax Error : unclosed quotes !"));
 	if(check_special_character(*input))
 		return (syntax_error(*input ,"Sysntax Error : unrecognized characters !"));
+	if(check_output_character(*input))
+		return (syntax_error(*input ,"Sysntax Error : syntax error near token '>'!"));
 	return (0);
 }
 
@@ -56,7 +59,7 @@ static int check_properly_enclosed(char *input)
 static int check_special_character(char *input)
 {
 	int i = 0;
-	char *special_chars = "\\&;,{()}", *str;
+	char *special_chars = "\\&;,{()}<", *str;
 
 	str = in_quotes(input);
 	while(special_chars[i])
@@ -69,6 +72,51 @@ static int check_special_character(char *input)
 				return (1);
 		}
 		i++;
+	}
+	return (0);
+}
+
+static int check_output_character(char *input)
+{
+	int i = 0;
+	char *str = ft_strchr(input, '>');
+	if(str)
+	{
+		if(str[i + 1] && !ft_isspace(str[i + 1]))
+			{
+				i++;
+				if(str[i] == '>')
+				{
+					if(str[i + 1] && !ft_isspace(str[i + 1]))
+					{
+						i++;
+						if(str[i] == '>')
+							return (1);
+						return (0);
+					}
+					else if(str[i + 1] && ft_isspace(str[i + 1]))
+					{
+						i++;
+						while(str[i] && ft_isspace(str[i]))
+							i++;
+						if(str[i] == '\0' || str[i] == '>')
+							return (1);
+						return (0);
+					}
+					return (1);
+				}
+				return (0);
+			}
+			else if(str[i + 1] && ft_isspace(str[i + 1]))
+			{
+				i++;
+				while(str[i] && ft_isspace(str[i]))
+					i++;
+				if(str[i] == '\0' || str[i] == '>')
+					return (1);
+				return (0);
+			}
+		return (1);
 	}
 	return (0);
 }
