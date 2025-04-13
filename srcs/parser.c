@@ -3,8 +3,8 @@
 void expand(t_shell *mini, t_list *list);
 int get_num_args(char *token);
 char *set_path_name(char *token);
-static void get_args(char **args, char *token, int size);
-static char **set_arg_array_smpl(int num_args, char *token);
+void get_args(char **args, char *token, int size);
+char **set_arg_array_smpl(int num_args, char *token);
 t_cmd *handel_pipe(t_list *current);
 
 int parse_and_expand(t_shell *mini)
@@ -47,7 +47,7 @@ t_cmd *handel_pipe(t_list *current)
 	return (cmd);
 }
 
-static char **set_arg_array_smpl(int num_args, char *token)
+char **set_arg_array_smpl(int num_args, char *token)
 {
 	char **args = malloc(sizeof(char*) * (num_args + 1));
 	if(!args)
@@ -93,7 +93,7 @@ char *get_command(char *token)
 	return (res);
 }
 
-static void get_args(char **args, char *token, int size)
+void get_args(char **args, char *token, int size)
 {
 	int i = 0, k = 0, start = 0, step = 1;
 	while(token && token[i] && token[i] != ' ')

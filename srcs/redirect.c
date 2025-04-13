@@ -2,7 +2,9 @@
 
 int ft_isspace(int c);
 static char *set_filename(char *token);
-static char **set_arg_array_oprd(int num_args, char *token);
+static char *set_arg_string(char *token);
+static char *get_arg_string(char *token);
+
 
 t_cmd *handel_output(char *token)
 {
@@ -10,25 +12,18 @@ t_cmd *handel_output(char *token)
 	 * example of the command format
 	 * echo "the string need to write in to the file" > file.txt
 	*/
+	char *arg_str = set_arg_string(token);
 	t_cmd *cmd = malloc(sizeof(t_cmd));
 	if(!cmd)
 		return (NULL);
 	cmd->type = OPRD_CMD;
-	cmd->command = set_path_name(token);
+	cmd->command = set_path_name(arg_str);
 	cmd->filename = set_filename(token);
-	cmd->num_args = get_num_args(token);
-	cmd->args = set_arg_array_oprd(cmd->num_args, token);
+	cmd->num_args = get_num_args(arg_str);
+	cmd->args = set_arg_array_smpl(cmd->num_args, arg_str);
 	cmd->next = NULL;
+	free(arg_str);
 	return (cmd);
-}
-
-static char **set_arg_array_oprd(int num_args, char *token)
-{
-	char **args = malloc(sizeof(char *) * (num_args + 1));
-	args[0] = set_path_name(token);
-	args[1] = ft_strdup("file.txt");
-	args[2] = NULL;
-	return(args);
 }
 
 static char *set_filename(char *token)
@@ -52,6 +47,37 @@ static char *set_filename(char *token)
 			i++;
 	}
 	res = ft_strnmdup(str, start, i);
+	return (res);
+}
+
+static char *set_arg_string(char *token)
+{
+	char *s1 = ft_strchr(token, '>');
+	char *s2 = ft_strnmdup(token, 0, s1 - token);
+	char *s3 = ft_strtrim(s2, " \f\n\t\v\r");
+	char *s4 = get_arg_string(s1);
+	char *s5 = ft_strjoin(s3, s4);
+	free(s2);
+	free(s3);
+	free(s4);
+	return (s5);
+}
+
+static char *get_arg_string(char *token)
+{
+	int i = 0;
+	char *res = NULL;
+	while(token && token[i] && ft_isspace(token[i]))
+		i++;
+	while(token && token[i] && !ft_isspace(token[i]))
+		i++;
+	while(token && token[i] && ft_isspace(token[i]))
+		i++;
+	while(token && token[i] && !ft_isspace(token[i]))
+		i++;
+	if(!token[i])
+		return (NULL);
+	res = ft_strnmdup(token, i, ft_strlen(token));
 	return (res);
 }
 

@@ -80,6 +80,8 @@ int extract_tokens(t_list **tokens, char *input);
 int parse_and_expand(t_shell *mini);
 char *get_command(char *token);
 char *set_path_name(char *token);
+void get_args(char **args, char *token, int size);
+char **set_arg_array_smpl(int num_args, char *token);
 
 /**
  * Implementaion in srcs/utils.c
